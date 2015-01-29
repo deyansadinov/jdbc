@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b3ffe99d-4b79-4ae1-b2d3-8889c71c2b3c" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/task5/Article.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/com/clouway/task5/ArticleDatabase.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test/ArticleDatabaseTest.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/schema/schema.sql" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
     </list>
     <ignored path="jdbc.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -52,11 +47,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ArticleDatabase.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ArticleDatabase.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/clouway/task5/ArticleDatabase.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.7761414" vertical-offset="54" max-vertical-offset="1476">
+            <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="1476">
               <caret line="76" column="35" selection-start-line="76" selection-start-column="35" selection-end-line="76" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.23858616" vertical-offset="0" max-vertical-offset="679">
+              <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -101,13 +106,13 @@
         <option value="$PROJECT_DIR$/src/com/clouway/task4/Address.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/task4/Contact.java" />
         <option value="$PROJECT_DIR$/.idea/misc.xml" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/com/clouway/task4/ContactsDatabase.java" />
         <option value="$PROJECT_DIR$/test/ContactsDatabaseTest.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/task5/Article.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/task5/ArticleDatabase.java" />
         <option value="$PROJECT_DIR$/test/ArticleDatabaseTest.java" />
         <option value="$PROJECT_DIR$/schema/schema.sql" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -686,13 +691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.32" vertical-offset="0" max-vertical-offset="675">
-          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/.name">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="675">
@@ -742,8 +740,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/clouway/task5/ArticleDatabase.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.7761414" vertical-offset="54" max-vertical-offset="1476">
+        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="1476">
           <caret line="76" column="35" selection-start-line="76" selection-start-column="35" selection-end-line="76" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.23858616" vertical-offset="0" max-vertical-offset="679">
+          <caret line="9" column="5" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
           <folding />
         </state>
       </provider>
