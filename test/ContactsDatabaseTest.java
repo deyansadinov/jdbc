@@ -1,4 +1,5 @@
 import com.clouway.task4.Address;
+import com.clouway.task4.ConnectionProvider;
 import com.clouway.task4.Contact;
 import com.clouway.task4.ContactsDatabase;
 import com.clouway.task4.User;
@@ -23,8 +24,9 @@ public class ContactsDatabaseTest {
 
   @Before
   public void setUp(){
-    contactsDatabase = new ContactsDatabase("addresses","contacts","users");
-    connection = contactsDatabase.connection("postgres","123456");
+    ConnectionProvider provider = new ConnectionProvider();
+    contactsDatabase = new ContactsDatabase(provider);
+    connection = provider.connect();
   }
 
   @After
@@ -40,7 +42,7 @@ public class ContactsDatabaseTest {
     List<User> result = contactsDatabase.findUsers();
 
     assertThat(result.size(),is(1));
-    assertThat(result.get(0).getName(),is("Dido"));
+    assertThat(result.get(0).name,is("Dido"));
   }
 
   @Test
@@ -51,7 +53,7 @@ public class ContactsDatabaseTest {
     List<User> result = contactsDatabase.findUsers();
 
     assertThat(result.size(),is(2));
-    assertThat(result.get(1).getName(),is("Gosho"));
+    assertThat(result.get(1).name,is("Gosho"));
   }
 
   @Test
@@ -61,7 +63,7 @@ public class ContactsDatabaseTest {
     List<Address> result = contactsDatabase.findAddress();
 
     assertThat(result.size(),is(1));
-    assertThat(result.get(0).getCity(),is("Plovdiv"));
+    assertThat(result.get(0).city,is("Plovdiv"));
   }
 
   @Test
@@ -72,7 +74,7 @@ public class ContactsDatabaseTest {
     List<Address> result = contactsDatabase.findAddress();
 
     assertThat(result.size(),is(2));
-    assertThat(result.get(1).getAddress(),is("Ivan Draganov"));
+    assertThat(result.get(1).address,is("Ivan Draganov"));
   }
 
   @Test
@@ -84,7 +86,7 @@ public class ContactsDatabaseTest {
     List<Contact> result = contactsDatabase.findContact();
 
     assertThat(result.size(),is(1));
-    assertThat(result.get(0).getUser_id(),is(1));
+    assertThat(result.get(0).userId,is(1));
   }
 
   @Test
@@ -103,7 +105,7 @@ public class ContactsDatabaseTest {
     List<Contact> result = contactsDatabase.findContact();
 
     assertThat(result.size(),is(2));
-    assertThat(result.get(1).getUser_id(),is(2));
+    assertThat(result.get(1).userId,is(2));
   }
 
 }
