@@ -8,7 +8,7 @@ import java.sql.Statement;
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public class test {
+public class Test {
   public static void main(String[] args) {
 
     try {

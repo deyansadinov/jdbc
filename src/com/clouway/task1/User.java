@@ -5,11 +5,11 @@ package com.clouway.task1;
  */
 public class User {
 
-  private final int id;
-  private final String name;
-  private final int age;
-  private final String address;
-  private final String e_mail;
+  public final int id;
+  public final String name;
+  public final int age;
+  public final String address;
+  public final String e_mail;
 
 
   public User(int id,String name,int age,String address,String e_mail) {
@@ -20,23 +20,23 @@ public class User {
     this.e_mail = e_mail;
   }
 
-  public int getId() {
-    return id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public String getE_mail() {
-    return e_mail;
-  }
+//  public int getId() {
+//    return id;
+//  }
+//
+//  public String getName() {
+//    return name;
+//  }
+//
+//  public int getAge() {
+//    return age;
+//  }
+//
+//  public String getAddress() {
+//    return address;
+//  }
+//
+//  public String getE_mail() {
+//    return e_mail;
+//  }
 }

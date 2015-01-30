@@ -1,4 +1,4 @@
-CREATE TABLE task1
+CREATE TABLE user_info
 
 (
 	id INT PRIMARY KEY NOT NULL,

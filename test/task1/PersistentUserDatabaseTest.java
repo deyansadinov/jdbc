@@ -1,7 +1,7 @@
 package task1;
 
+import com.clouway.task1.PersistentUserDatabase;
 import com.clouway.task1.User;
-import com.clouway.task1.UserDatabase;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -11,23 +11,23 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
-public class UserDatabaseTest {
+public class PersistentUserDatabaseTest {
 
 
-  private UserDatabase userDatabase;
+  private PersistentUserDatabase userDatabase;
   private Connection connection;
   private User user = new User(1, "dido", 26, "Bulgaria", "sss@abv.bg");
 
 
   @org.junit.Before
   public void setUp() throws Exception {
-    userDatabase = new UserDatabase("task1");
+    userDatabase = new PersistentUserDatabase("user_info");
     connection = userDatabase.connect("postgres", "123456");
   }
 
   @org.junit.After
   public void tearDown() throws Exception {
-    connection.createStatement().execute("truncate task1");
+    connection.createStatement().execute("truncate user_info");
     connection.close();
   }
 
@@ -37,7 +37,7 @@ public class UserDatabaseTest {
 
     List<User> lists = userDatabase.getAll();
     assertThat(lists.size(), is(1));
-    assertThat(lists.get(0).getName(), is("dido"));
+    assertThat(lists.get(0).name, is("dido"));
   }
 
   @Test
@@ -56,7 +56,7 @@ public class UserDatabaseTest {
     userDatabase.update(user, "Ivan");
 
     List<User> list = userDatabase.getAll();
-    assertThat(list.get(0).getName(), is("Ivan"));
+    assertThat(list.get(0).name, is("Ivan"));
   }
 
   @Test
@@ -84,9 +84,9 @@ public class UserDatabaseTest {
   public void where() {
     userDatabase.register(user);
 
-    List<User> list = userDatabase.retrieveAge(26);
+    List<User> list = userDatabase.retrieveUsersByAge(26);
 
-    assertThat(list.get(0).getAge(),is(26));
+    assertThat(list.get(0).age,is(26));
   }
 
 

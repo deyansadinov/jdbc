@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public interface UserRepository<T> {
+public interface PersistentUserRepository<T> {
   List<User> getAll();
 
   void register(T t);
@@ -14,9 +14,7 @@ public interface UserRepository<T> {
 
   void remove(T t);
 
-  void dropTable(String newTable);
-
   List<User> findByProperty(int age, String retrieveAge);
 
-  List<User> retrieveAge(int age);
+  List<User> retrieveUsersByAge(int age);
 }

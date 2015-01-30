@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public class UserDatabase implements UserRepository<User> {
+public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   private final String tableName;
   private Connection connection;
@@ -22,7 +22,7 @@ public class UserDatabase implements UserRepository<User> {
   private List<User> list = new ArrayList<User>();
 
 
-  public UserDatabase(String tableName) {
+  public PersistentUserDatabase(String tableName) {
     this.tableName = tableName;
   }
 
@@ -41,8 +41,8 @@ public class UserDatabase implements UserRepository<User> {
   public void register(User user) {
     try {
       statement = connection.createStatement();
-      String sql = "insert into " + tableName + "(id,name,age,address,e_mail)  values (" + user.getId() + ",'" + user.getName() + "'," + user.getAge() + ",'" +
-              user.getAddress() + "','" + user.getE_mail() + "')";
+      String sql = "insert into " + tableName + "(id,name,age,address,e_mail)  values (" + user.id + ",'" + user.name + "'," + user.age + ",'" +
+              user.address + "','" + user.e_mail + "')";
       statement.executeUpdate(sql);
       System.out.println("\n" + sql);
     } catch (SQLException e) {
@@ -56,7 +56,7 @@ public class UserDatabase implements UserRepository<User> {
       statement = connection.createStatement();
       PreparedStatement pr = connection.prepareStatement("update " + tableName + " set name=? where id=?");
       pr.setString(1, name);
-      pr.setInt(2, user.getId());
+      pr.setInt(2, user.id);
       pr.execute();
       pr.close();
     } catch (SQLException e) {
@@ -67,13 +67,13 @@ public class UserDatabase implements UserRepository<User> {
   @Override
   public void remove(User user) {
     try {
-      connection.createStatement().execute("delete from " + tableName + " where id=" + user.getId());
+      connection.createStatement().execute("delete from " + tableName + " where id=" + user.id);
     } catch (SQLException e) {
       e.printStackTrace();
     }
   }
 
-  @Override
+
   public void dropTable(String newTable) {
     try {
       connection.createStatement().execute("drop table " + newTable);
@@ -95,7 +95,7 @@ public class UserDatabase implements UserRepository<User> {
   }
 
   @Override
-  public List<User> retrieveAge(int age) {
+  public List<User> retrieveUsersByAge(int age) {
     try {
       statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from " + tableName + " where " + age + " >=25 ");
