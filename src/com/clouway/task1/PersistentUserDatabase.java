@@ -16,29 +16,21 @@ import java.util.List;
  */
 public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
+  private final ConnectionProvider provider;
   private final String tableName;
-  private Connection connection;
   private Statement statement;
   private List<User> list = new ArrayList<User>();
 
 
-  public PersistentUserDatabase(String tableName) {
+  public PersistentUserDatabase(ConnectionProvider provider,String tableName) {
+    this.provider = provider;
     this.tableName = tableName;
   }
 
-  public Connection connect(String user, String pass) {
-    try {
-      System.out.println("Connecting to database....");
-      connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/didodb", user, pass);
-      return connection;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
 
   @Override
   public void register(User user) {
+      Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
       String sql = "insert into " + tableName + "(id,name,age,address,e_mail)  values (" + user.id + ",'" + user.name + "'," + user.age + ",'" +
@@ -47,11 +39,19 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
       System.out.println("\n" + sql);
     } catch (SQLException e) {
       e.printStackTrace();
+    }finally {
+      try {
+        connection.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
   }
 
   @Override
   public void update(User user, String name) {
+    Connection connection = provider.connect();
+
     try {
       statement = connection.createStatement();
       PreparedStatement pr = connection.prepareStatement("update " + tableName + " set name=? where id=?");
@@ -66,6 +66,8 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public void remove(User user) {
+    Connection connection = provider.connect();
+
     try {
       connection.createStatement().execute("delete from " + tableName + " where id=" + user.id);
     } catch (SQLException e) {
@@ -75,6 +77,7 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
 
   public void dropTable(String newTable) {
+    Connection connection = provider.connect();
     try {
       connection.createStatement().execute("drop table " + newTable);
     } catch (SQLException e) {
@@ -84,6 +87,7 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> findByProperty(int age, String retrieveAge) {
+    Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from " + tableName + " where " + age + "::text like '" + retrieveAge + "'" );
@@ -96,6 +100,7 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> retrieveUsersByAge(int age) {
+    Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from " + tableName + " where " + age + " >=25 ");
@@ -108,6 +113,7 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> getAll() {
+    Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from " + tableName);

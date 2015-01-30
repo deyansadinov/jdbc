@@ -19,24 +19,4 @@ public class User {
     this.address = address;
     this.e_mail = e_mail;
   }
-
-//  public int getId() {
-//    return id;
-//  }
-//
-//  public String getName() {
-//    return name;
-//  }
-//
-//  public int getAge() {
-//    return age;
-//  }
-//
-//  public String getAddress() {
-//    return address;
-//  }
-//
-//  public String getE_mail() {
-//    return e_mail;
-//  }
 }

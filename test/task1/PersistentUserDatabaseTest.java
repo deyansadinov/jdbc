@@ -1,5 +1,6 @@
 package task1;
 
+import com.clouway.task1.ConnectionProvider;
 import com.clouway.task1.PersistentUserDatabase;
 import com.clouway.task1.User;
 import org.junit.Test;
@@ -21,8 +22,9 @@ public class PersistentUserDatabaseTest {
 
   @org.junit.Before
   public void setUp() throws Exception {
-    userDatabase = new PersistentUserDatabase("user_info");
-    connection = userDatabase.connect("postgres", "123456");
+    ConnectionProvider connectionProvider = new ConnectionProvider();
+    userDatabase = new PersistentUserDatabase(connectionProvider,"user_info");
+    connection = connectionProvider.connect();
   }
 
   @org.junit.After
