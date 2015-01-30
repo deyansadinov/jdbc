@@ -1,35 +1,39 @@
 package com.clauway.task2.task3;
 
+import java.sql.Date;
+
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
 public class Trip {
 
-  private final int ucn;
-  private final String arrivalDate;
-  private final String departureDate;
-  private final String city;
+  public final int ucn;
+  public final Date arrivalDate;
+  public final Date departureDate;
+  public final String city;
 
-  public Trip(int ucn,String arrivalDate,String departureDate,String city) {
+  public Trip(int ucn,Date arrivalDate,Date departureDate,String city) {
     this.ucn = ucn;
     this.arrivalDate = arrivalDate;
     this.departureDate = departureDate;
     this.city = city;
   }
 
-  public int getUcn() {
-    return ucn;
-  }
 
-  public String getArrivalDate() {
-    return arrivalDate;
-  }
 
-  public String getDepartureDate() {
-    return departureDate;
-  }
-
-  public String getCity() {
-    return city;
-  }
+//  public int getUcn() {
+//    return ucn;
+//  }
+//
+//  public String getArrivalDate() {
+//    return arrivalDate;
+//  }
+//
+//  public String getDepartureDate() {
+//    return departureDate;
+//  }
+//
+//  public String getCity() {
+//    return city;
+//  }
 }

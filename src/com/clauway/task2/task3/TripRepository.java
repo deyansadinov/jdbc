@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public interface TripRepository<T> {
+public interface TripRepository {
 
   void addTrip(Trip trip);
 
-  List<Person> findPeopleAtSameCityAtSameDate(String city, String date);
+  List<Person> findPeopleAtSameCityAtSameDate(String city, Date date);
 
   List<String> listCitiesDescendingTripCount();
 

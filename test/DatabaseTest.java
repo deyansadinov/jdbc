@@ -1,4 +1,6 @@
+import com.clauway.task2.task3.ConnectionProvider;
 import com.clauway.task2.task3.Database;
+import com.clauway.task2.task3.DateCalendar;
 import com.clauway.task2.task3.Person;
 import com.clauway.task2.task3.Trip;
 import com.sun.deploy.perf.PerfRollup;
@@ -24,12 +26,18 @@ public class DatabaseTest {
   private Database database;
   private Connection connection;
   private Person person = new Person("dido",38746387,26,"sss@abv.bg");
-  private Trip trip = new Trip(38746387,"2015-01-20","2015-01-25","Amsterdam");
+//  private Trip trip = new Trip(38746387,"2015-01-20","2015-01-25","Amsterdam");
+  private DateCalendar date;
+
 
   @Before
   public void setUp(){
-    database = new Database("people","trip");
-    connection = database.connection("postgres","123456");
+    date = new DateCalendar();
+    ConnectionProvider provider = new ConnectionProvider();
+    database = new Database(provider);
+    connection = provider.connect();
+
+
   }
 
   @After
@@ -44,7 +52,7 @@ public class DatabaseTest {
     List<Person> list = database.findPeople();
 
     assertThat(list.size(),is(1));
-    assertThat(list.get(0).getName(),is("dido"));
+    assertThat(list.get(0).name,is("dido"));
   }
 
   @Test
@@ -54,7 +62,7 @@ public class DatabaseTest {
 
     List<Person> list = database.findPeople();
 
-    assertThat(list.get(0).getAge(),is(27));
+    assertThat(list.get(0).age,is(27));
   }
 
   @Test
@@ -84,13 +92,23 @@ public class DatabaseTest {
     database.addPerson(new Person("kalin",2,34,"kkk@abv.bg"));
     database.addPerson(new Person("petyr",3,30,"ppp@abv.bg"));
 
-    database.addTrip(trip);
-    database.addTrip(new Trip(1,"2014-01-12","2014-01-20","Amsterdam"));
-    database.addTrip(new Trip(2,"2014-01-10","2014-01-20","Amsterdam"));
-    database.addTrip(new Trip(3,"2014-01-10","2014-01-25","Berlin"));
+    Date dateArrive1 = date.getDate(2015, 1,20);
+    Date dateArrive2 = date.getDate(2015, 1,12);
+    Date dateArrive3 = date.getDate(2015, 1,10);
+    Date dateArrive4 = date.getDate(2015, 1,10);
 
-    List<Person> list = database.findPeopleAtSameCityAtSameDate("Amsterdam","2014-01-10");
-   assertThat(list.size(), is(3));
+    Date dateLeaving1 = date.getDate(2015,1,25);
+    Date dateLeaving2 = date.getDate(2015,1,20);
+    Date dateLeaving3 = date.getDate(2015,1,20);
+    Date dateLeaving4 = date.getDate(2015,1,25);
+
+    database.addTrip(new Trip(38746387,dateArrive1,dateLeaving1,"Amsterdam"));
+    database.addTrip(new Trip(1,dateArrive2,dateLeaving2,"Amsterdam"));
+    database.addTrip(new Trip(2,dateArrive3,dateLeaving3,"Amsterdam"));
+    database.addTrip(new Trip(3,dateArrive4,dateLeaving4,"Berlin"));
+
+    List<Person> list = database.findPeopleAtSameCityAtSameDate("Amsterdam",dateArrive2);
+   assertThat(list.size(), is(2));
 
   }
   
@@ -101,35 +119,47 @@ public class DatabaseTest {
     database.addPerson(new Person("kalin",2,34,"kkk@abv.bg"));
     database.addPerson(new Person("petyr",3,30,"ppp@abv.bg"));
 
+    Date dateArrive1 = date.getDate(2015, 1,20);
+    Date dateArrive2 = date.getDate(2015, 1,12);
+    Date dateArrive3 = date.getDate(2015, 1,10);
+    Date dateArrive4 = date.getDate(2015, 1,10);
 
-    database.addTrip(new Trip(1,"2014-01-12","2014-01-20","Amsterdam"));
-    database.addTrip(new Trip(2,"2014-01-10","2014-01-20","Amsterdam"));
-    database.addTrip(new Trip(3,"2014-01-10","2014-01-25","Berlin"));
-    database.addTrip(new Trip(1,"2014-01-23","2014-01-30","Varna"));
-    database.addTrip(new Trip(3,"2014-01-24","2014-01-30","Berlin"));
-    database.addTrip(new Trip(2,"2014-01-25","2014-01-30","Amsterdam"));
+    Date dateLeaving1 = date.getDate(2015,1,25);
+    Date dateLeaving2 = date.getDate(2015,1,20);
+    Date dateLeaving3 = date.getDate(2015,1,20);
+    Date dateLeaving4 = date.getDate(2015,1,25);
+
+    database.addTrip(new Trip(1,dateArrive1,dateLeaving1,"Amsterdam"));
+    database.addTrip(new Trip(2,dateArrive2,dateLeaving2,"Amsterdam"));
+    database.addTrip(new Trip(3,dateArrive3,dateLeaving3,"Amsterdam"));
+    database.addTrip(new Trip(3,dateArrive4,dateLeaving4,"Berlin"));
+
 
     List<String> result = database.listCitiesDescendingTripCount();
 
-    assertThat(result.size(),is(3));
+    assertThat(result.size(),is(2));
     assertThat(result.get(0),is("Amsterdam"));
     assertThat(result.get(1),is("Berlin"));
-    assertThat(result.get(2),is("Varna"));
+
   }
 
   @Test
   public void findCitiesByDate() {
     database.addPerson(person);
-    database.addTrip(trip);
+    Date dateArrive = date.getDate(2015, 1,20);
+    Date dateLeaving = date.getDate(2015,1,25);
+    database.addTrip(new Trip(38746387,dateArrive,dateLeaving,"Amsterdam"));
 
-    List<Person> result = database.findCitiesByDate("Amsterdam","2015-01-20");
+    List<Person> result = database.findCitiesByDate("Amsterdam",dateArrive);
 
     assertThat(result.size(),is(1));
   }
   
   @Test
   public void addTripToPersonWhoDoNotExist() throws SQLException {
-    database.addTrip(trip);
+    Date dateArrive = date.getDate(2015, 1,20);
+    Date dateLeaving = date.getDate(2015,1,25);
+    database.addTrip(new Trip(38746387,dateArrive,dateLeaving,"Amsterdam"));
 
     List<Trip> result = database.findTrips();
 

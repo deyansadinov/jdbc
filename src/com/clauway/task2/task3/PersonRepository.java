@@ -1,5 +1,6 @@
 package com.clauway.task2.task3;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -17,5 +18,5 @@ public interface PersonRepository<T> {
   List<Person> findByLetters(String letter);
 
 
-  List<Person> findCitiesByDate(String city, String date);
+  List<Person> findCitiesByDate(String city, Date date);
 }

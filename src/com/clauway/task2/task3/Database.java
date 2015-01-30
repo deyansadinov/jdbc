@@ -7,46 +7,35 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public class Database implements PersonRepository<Person>, TripRepository<Trip> {
+public class Database implements PersonRepository<Person>, TripRepository {
 
 
-  private final String personTable;
-  private final String tableTrip;
-  private Connection connection;
+  private final ConnectionProvider provider;
   private Statement statement;
   private List<Person> personList = new ArrayList<Person>();
   private ResultSet rs;
   private PreparedStatement pr;
 
-  public Database(String personTable, String tableTrip) {
+  public Database(ConnectionProvider provider) {
 
-
-    this.personTable = personTable;
-    this.tableTrip = tableTrip;
+    this.provider = provider;
   }
 
-  public Connection connection(String user, String pass) {
-    try {
-      connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/didodb", user, pass);
-      return connection;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
 
   @Override
   public void addPerson(Person person) {
+    Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
-      String sql = "insert into people (name,ucn,age,e_mail) values ('" + person.getName() + "'," + person.getUcn() + "," +
-              person.getAge() + ",'" + person.getEmail() + "')";
+      String sql = "insert into people (name,ucn,age,e_mail) values ('" + person.name + "'," + person.ucn + "," +
+              person.age + ",'" + person.email + "')";
       statement.executeUpdate(sql);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -58,8 +47,8 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
 
   @Override
   public List<Person> findPeople() {
+    Connection connection = provider.connect();
     try {
-
       rs = connection.createStatement().executeQuery("select * from people");
       peopleManipulator(rs);
     } catch (SQLException e) {
@@ -73,11 +62,12 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
 
   @Override
   public void updatePerson(Person person, int age) {
+    Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
       pr = connection.prepareStatement("update people set age=? where name=?");
       pr.setInt(1, age);
-      pr.setString(2, person.getName());
+      pr.setString(2, person.name);
       pr.execute();
       pr.close();
     } catch (SQLException e) {
@@ -90,8 +80,8 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
 
   @Override
   public List<Person> findByLetters(String letter) {
+    Connection connection = provider.connect();
     try {
-
       rs = connection.createStatement().executeQuery("select * from people where name::text like '" + letter + "%'");
       peopleManipulator(rs);
     } catch (SQLException e) {
@@ -103,7 +93,9 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
   }
 
   @Override
-  public List<Person> findCitiesByDate(String city, String date) {
+  public List<Person> findCitiesByDate(String city, Date date) {
+//    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    Connection connection = provider.connect();
     try {
       rs = connection.createStatement().executeQuery("select * from people where ucn in (select ucn from trip where city='" + city + "' and " +
               "date_of_arrival='" + date + "')");
@@ -118,13 +110,13 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
 
   @Override
   public void addTrip(Trip trip) {
+    Connection connection = provider.connect();
     try {
       pr = connection.prepareStatement("insert into trip(ucn, date_of_arrival,date_of_departure,city) values (?,?,?,?)");
-
-      pr.setInt(1,trip.getUcn());
-      pr.setDate(2, Date.valueOf(trip.getArrivalDate()));
-      pr.setDate(3, Date.valueOf(trip.getDepartureDate()));
-      pr.setString(4,trip.getCity());
+      pr.setInt(1,trip.ucn);
+      pr.setDate(2,trip.arrivalDate);
+      pr.setDate(3,trip.departureDate);
+      pr.setString(4,trip.city);
       pr.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -134,12 +126,11 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
   }
 
   @Override
-  public List<Person> findPeopleAtSameCityAtSameDate(String city, String date) {
+  public List<Person> findPeopleAtSameCityAtSameDate(String city, Date date) {
+    Connection connection = provider.connect();
     try {
       statement = connection.createStatement();
-
       pr = connection.prepareStatement("select * from people where ucn in (select ucn from trip where city='"+city+"' and date_of_arrival>='"+date+"')");
-
       rs = pr.executeQuery();
       peopleManipulator(rs);
     } catch (SQLException e) {
@@ -154,13 +145,12 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
 
   @Override
   public List<String> listCitiesDescendingTripCount() {
+    Connection connection = provider.connect();
     List<String> cityList = new ArrayList<String>();
     try {
       statement = connection.createStatement();
-
       pr = connection.prepareStatement("select city from trip group by city order by count(ucn) desc");
       rs = pr.executeQuery();
-
       while (rs.next()){
         cityList.add(rs.getString(1));
       }
@@ -176,13 +166,14 @@ public class Database implements PersonRepository<Person>, TripRepository<Trip> 
 
   @Override
   public List<Trip> findTrips() throws SQLException {
+    Connection connection = provider.connect();
     List<Trip> tripList = new ArrayList<Trip>();
     try {
       rs = connection.createStatement().executeQuery("select * from trip");
       while (rs.next()){
         int ucn = rs.getInt(1);
-        String arrivalDate = rs.getString(2);
-        String departureDate = rs.getString(3);
+        Date arrivalDate = (rs.getDate(2));
+        Date departureDate = rs.getDate(3);
         String city = rs.getString(4);
         tripList.add(new Trip(ucn,arrivalDate,departureDate,city));
       }
