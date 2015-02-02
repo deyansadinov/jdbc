@@ -13,29 +13,21 @@ import java.util.List;
  */
 public class ArticleDatabase {
 
-  private final String articleTable;
-  private final String historyTable;
-  private Connection connection;
 
-  public ArticleDatabase(String articleTable,String historyTable) {
-    this.articleTable = articleTable;
-    this.historyTable = historyTable;
+  private final ConnectionProvider provider;
+
+  public ArticleDatabase(ConnectionProvider provider) {
+
+    this.provider = provider;
   }
 
-  public Connection connection(String user,String pass){
-    try {
-      connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/didodb", user, pass);
-      return connection;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
+
 
   public void addArticle(Article article) {
+    Connection connection = provider.connect();
     try {
-      PreparedStatement pr = connection.prepareStatement("insert into articles(id,title) values (" + article.getId() + ",'" +
-      article.getTitle() + "')");
+      PreparedStatement pr = connection.prepareStatement("insert into articles(id,title) values (" + article.id + ",'" +
+      article.title + "')");
       pr.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -43,6 +35,7 @@ public class ArticleDatabase {
   }
 
   public List<Article> findAll() {
+    Connection connection = provider.connect();
     List<Article> list = new ArrayList<Article>();
     try {
       ResultSet rs = connection.createStatement().executeQuery("select * from articles");
@@ -58,6 +51,7 @@ public class ArticleDatabase {
   }
 
   public List<Article> findHistory() {
+    Connection connection = provider.connect();
     List<Article> list = new ArrayList<Article>();
     try {
       ResultSet rs = connection.createStatement().executeQuery("select * from articles_history");
@@ -73,6 +67,7 @@ public class ArticleDatabase {
   }
 
   public void updateArticle(int id, String newArticle) {
+    Connection connection = provider.connect();
     try {
       connection.createStatement().execute("update articles set title='" + newArticle + "' where id=" + id);
     } catch (SQLException e) {

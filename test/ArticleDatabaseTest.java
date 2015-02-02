@@ -1,5 +1,6 @@
 import com.clouway.task5.Article;
 import com.clouway.task5.ArticleDatabase;
+import com.clouway.task5.ConnectionProvider;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +22,9 @@ public class ArticleDatabaseTest {
 
   @Before
   public void setUp() {
-    articleDatabase = new ArticleDatabase("articles", "articles_history");
-    connection = articleDatabase.connection("postgres", "123456");
+    ConnectionProvider provider = new ConnectionProvider();
+    articleDatabase = new ArticleDatabase(provider);
+    connection = provider.connect();
   }
 
   @After
@@ -50,6 +52,6 @@ public class ArticleDatabaseTest {
     List<Article> listHistory = articleDatabase.findHistory();
 
     assertThat(listHistory.size(),is(1));
-    assertThat(result.get(0).getTitle(),is("mysql"));
+    assertThat(result.get(0).title,is("mysql"));
   }
 }
