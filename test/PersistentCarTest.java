@@ -1,4 +1,5 @@
 import com.clouway.task6.Car;
+import com.clouway.task6.ConnectionProvider;
 import com.clouway.task6.PersistentCar;
 import org.junit.After;
 import org.junit.Before;
@@ -22,8 +23,9 @@ public class PersistentCarTest {
 
   @Before
   public void setUp() {
-    persistentCar = new PersistentCar("car");
-    connection = persistentCar.connection("postgres", "123456");
+    ConnectionProvider provider = new ConnectionProvider();
+    persistentCar = new PersistentCar(provider);
+    connection = provider.connect();
   }
 
   @After
@@ -44,10 +46,6 @@ public class PersistentCarTest {
   public void register1MillionRows() throws SQLException {
 
     persistentCar.register1MillionRows(new Car(randomInt(1000000), randomInt(232353), randomInt(34255)));
-
-//    List<Car> result = persistentCar.findAll();
-
-//    assertThat(result.size(), is(1000000));
 
   }
 

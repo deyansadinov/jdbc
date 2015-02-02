@@ -13,29 +13,19 @@ import java.util.List;
  */
 public class PersistentCar {
 
-  private final String carTable;
-  private Connection connection;
 
+  private final ConnectionProvider provider;
 
-  public PersistentCar(String carTable) {
-    this.carTable = carTable;
+  public PersistentCar(ConnectionProvider provider) {
+
+    this.provider = provider;
   }
-
-  public Connection connection(String user,String pass){
-    try {
-      connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/didodb", user, pass);
-      return connection;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
 
   public void register(Car car) {
+    Connection connection = provider.connect();
     try {
-      PreparedStatement pr = connection.prepareStatement("insert into car(id,power,year) values(" + car.getId() + ","
-      + car.getPower() + "," + car.getYear() + ")");
+      PreparedStatement pr = connection.prepareStatement("insert into car(id,power,year) values(" + car.id + ","
+      + car.power + "," + car.year + ")");
       pr.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -43,6 +33,7 @@ public class PersistentCar {
   }
 
   public List<Car> findAll() {
+    Connection connection = provider.connect();
     List<Car> list = new ArrayList<Car>();
     try {
       ResultSet rs = connection.createStatement().executeQuery("select * from car");
@@ -60,11 +51,12 @@ public class PersistentCar {
 
 
   public void register1MillionRows(Car car) {
+    Connection connection = provider.connect();
     try {
       connection.setAutoCommit(false);
       for (int i = 0; i < 1000000; i++) {
         PreparedStatement pr = connection.prepareStatement("insert into car(power,year) values ("
-        + car.getPower() + "," + car.getYear() + ")");
+        + car.power + "," + car.year + ")");
         pr.execute();
       }
     } catch (SQLException e) {
