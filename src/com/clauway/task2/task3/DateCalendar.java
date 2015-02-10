@@ -6,8 +6,8 @@ import java.util.Calendar;
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public class DateCalendar implements DateUtil {
-  @Override
+public class DateCalendar  {
+
   public Date getDate(int year, int month, int day) {
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.YEAR,year);

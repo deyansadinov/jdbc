@@ -16,5 +16,5 @@ public interface TripRepository {
   List<String> listCitiesDescendingTripCount();
 
 
-  List<Trip> findTrips() throws SQLException;
+  List<Trip> findTrips() ;
 }

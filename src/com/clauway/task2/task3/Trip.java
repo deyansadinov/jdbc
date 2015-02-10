@@ -18,22 +18,4 @@ public class Trip {
     this.departureDate = departureDate;
     this.city = city;
   }
-
-
-
-//  public int getUcn() {
-//    return ucn;
-//  }
-//
-//  public String getArrivalDate() {
-//    return arrivalDate;
-//  }
-//
-//  public String getDepartureDate() {
-//    return departureDate;
-//  }
-//
-//  public String getCity() {
-//    return city;
-//  }
 }

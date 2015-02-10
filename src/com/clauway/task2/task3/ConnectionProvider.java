@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class ConnectionProvider {
 
-  public Connection connect(){
+  public Connection get(){
     Connection connection = null;
     try {
       connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/didodb", "postgres","123456");

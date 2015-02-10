@@ -1,14 +1,15 @@
 package com.clauway.task2.task3;
 
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public interface PersonRepository<T> {
+public interface PersonRepository {
 
-  void addPerson(T t);
+  void addPerson(Person person) throws SQLException;
 
   List<Person> findPeople();
 
