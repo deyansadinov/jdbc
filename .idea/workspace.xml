@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b3ffe99d-4b79-4ae1-b2d3-8889c71c2b3c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java" afterPath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/PersistentRepositoryTest.java" afterPath="$PROJECT_DIR$/test/PersistentRepositoryTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersonRepository.java" afterPath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersonRepository.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/schema/schema.sql" afterPath="$PROJECT_DIR$/schema/schema.sql" />
     </list>
     <ignored path="jdbc.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -30,8 +29,8 @@
       <file leaf-file-name="schema.sql" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/schema/schema.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="198" max-vertical-offset="378">
-              <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
+              <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -47,20 +46,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PersistentRepository.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="PersistentRepository.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="738" max-vertical-offset="4338">
-              <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.63870966" vertical-offset="2826" max-vertical-offset="4212">
+              <caret line="197" column="47" selection-start-line="197" selection-start-column="47" selection-end-line="197" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PersistentRepositoryTest.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="PersistentRepositoryTest.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/PersistentRepositoryTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.46451613" vertical-offset="108" max-vertical-offset="2628">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="2628">
               <caret line="48" column="54" selection-start-line="48" selection-start-column="54" selection-end-line="48" selection-end-column="54" />
               <folding />
             </state>
@@ -106,7 +105,6 @@
         <option value="$PROJECT_DIR$/src/com/clouway/task1/UserDatabase.java" />
         <option value="$PROJECT_DIR$/src/com/clouway/task1/User.java" />
         <option value="$PROJECT_DIR$/test/task1/UserDatabaseTest.java" />
-        <option value="$PROJECT_DIR$/schema/schema.sql" />
         <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/DateUtil.java" />
         <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/Person.java" />
         <option value="$PROJECT_DIR$/test/DatabaseTest.java" />
@@ -117,8 +115,9 @@
         <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/Trip.java" />
         <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/PersonRepository.java" />
         <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/TripRepository.java" />
-        <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java" />
         <option value="$PROJECT_DIR$/test/PersistentRepositoryTest.java" />
+        <option value="$PROJECT_DIR$/schema/schema.sql" />
+        <option value="$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java" />
       </list>
     </option>
   </component>
@@ -644,6 +643,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="378" max-vertical-offset="810">
           <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -713,6 +713,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="738">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -768,6 +769,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="630" max-vertical-offset="738">
           <caret line="35" column="0" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -823,6 +825,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="342" max-vertical-offset="738">
           <caret line="19" column="23" selection-start-line="19" selection-start-column="23" selection-end-line="19" selection-end-column="23" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -907,14 +910,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/schema/schema.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
-          <caret line="11" column="21" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.17900552" vertical-offset="0" max-vertical-offset="905">
@@ -934,6 +929,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.50591713" vertical-offset="0" max-vertical-offset="676">
           <caret line="19" column="3" selection-start-line="19" selection-start-column="3" selection-end-line="19" selection-end-column="3" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -968,18 +964,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java">
+    <entry file="file://$PROJECT_DIR$/test/PersistentRepositoryTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="162" max-vertical-offset="4212">
-          <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="2628">
+          <caret line="48" column="54" selection-start-line="48" selection-start-column="54" selection-end-line="48" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/PersistentRepositoryTest.java">
+    <entry file="file://$PROJECT_DIR$/schema/schema.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.46451613" vertical-offset="108" max-vertical-offset="2628">
-          <caret line="48" column="54" selection-start-line="48" selection-start-column="54" selection-end-line="48" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
+          <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.63870966" vertical-offset="2826" max-vertical-offset="4212">
+          <caret line="197" column="47" selection-start-line="197" selection-start-column="47" selection-end-line="197" selection-end-column="47" />
           <folding />
         </state>
       </provider>

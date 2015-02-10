@@ -195,7 +195,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
         String name = rs.getString("name");
         int ucn = rs.getInt("ucn");
         int age = rs.getInt("age");
-        String email = rs.getString("e_mail");
+        String email = rs.getString("user_email");
         list.add(new Person(name, ucn, age, email));
       }
     } catch (SQLException e) {

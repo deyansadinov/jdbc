@@ -3,7 +3,7 @@ CREATE TABLE people
     name VARCHAR(30) NOT null,
     ucn serial primary key not null,
     age int not null,
-    e_mail VARCHAR(30) not null
+    user_email VARCHAR(30) not null
 );
 
 CREATE TABLE trip
