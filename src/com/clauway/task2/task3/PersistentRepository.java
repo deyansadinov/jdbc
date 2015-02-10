@@ -23,7 +23,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
 
 
   @Override
-  public void addPerson(Person person) throws SQLException {
+  public void addUser(Person person) throws SQLException {
     Connection connection = provider.get();
     Statement statement = connection.createStatement();
     try {
@@ -39,7 +39,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
 
 
   @Override
-  public List<Person> findPeople() {
+  public List<Person> findUsers() {
     List<Person> personList = new ArrayList<Person>();
     Connection connection = provider.get();
     ResultSet rs = null;

@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface PersonRepository {
 
-  void addPerson(Person person) throws SQLException;
+  void addUser(Person person) throws SQLException;
 
-  List<Person> findPeople();
+  List<Person> findUsers();
 
   void updatePerson(Person person, int age);
 

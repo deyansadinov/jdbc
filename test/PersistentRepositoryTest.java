@@ -43,10 +43,10 @@ public class PersistentRepositoryTest {
   }
 
   @Test
-  public void addPerson() throws SQLException {
-    persistentRepository.addPerson(person);
+  public void addUser() throws SQLException {
+    persistentRepository.addUser(person);
 
-    List<Person> list = persistentRepository.findPeople();
+    List<Person> list = persistentRepository.findUsers();
 
     assertThat(list.size(),is(1));
     assertThat(list.get(0).name,is("dido"));
@@ -54,17 +54,17 @@ public class PersistentRepositoryTest {
 
   @Test
   public void updatePersonAge() throws SQLException{
-    persistentRepository.addPerson(person);
+    persistentRepository.addUser(person);
     persistentRepository.updatePerson(person,27);
 
-    List<Person> list = persistentRepository.findPeople();
+    List<Person> list = persistentRepository.findUsers();
 
     assertThat(list.get(0).age,is(27));
   }
 
   @Test
   public void findPersonByLetters() throws SQLException{
-    persistentRepository.addPerson(person);
+    persistentRepository.addUser(person);
 
     List<Person> list = persistentRepository.findByLetters("d");
 
@@ -73,8 +73,8 @@ public class PersistentRepositoryTest {
 
   @Test
   public void findMorePersonsByLetters() throws SQLException{
-    persistentRepository.addPerson(person);
-    persistentRepository.addPerson(new Person("danail",45389437,24,"dd@abv.bg"));
+    persistentRepository.addUser(person);
+    persistentRepository.addUser(new Person("danail", 45389437, 24, "dd@abv.bg"));
 
     List<Person> list = persistentRepository.findByLetters("d");
 
@@ -84,10 +84,10 @@ public class PersistentRepositoryTest {
 
   @Test
   public void findPeopleAtSameCityAtSameDate() throws SQLException {
-    persistentRepository.addPerson(person);
-    persistentRepository.addPerson(new Person("gosho",1,24,"ggg@abv.bg"));
-    persistentRepository.addPerson(new Person("kalin",2,34,"kkk@abv.bg"));
-    persistentRepository.addPerson(new Person("petyr",3,30,"ppp@abv.bg"));
+    persistentRepository.addUser(person);
+    persistentRepository.addUser(new Person("gosho", 1, 24, "ggg@abv.bg"));
+    persistentRepository.addUser(new Person("kalin", 2, 34, "kkk@abv.bg"));
+    persistentRepository.addUser(new Person("petyr", 3, 30, "ppp@abv.bg"));
 
 
     persistentRepository.addTrip(new Trip(38746387,date.getDate(2015, 1,20),date.getDate(2015,1,25),"Amsterdam"));
@@ -103,9 +103,9 @@ public class PersistentRepositoryTest {
   @Test
   public void listCitiesOrderedByNumberOfTrips() throws SQLException{
 
-    persistentRepository.addPerson(new Person("gosho",1,24,"ggg@abv.bg"));
-    persistentRepository.addPerson(new Person("kalin",2,34,"kkk@abv.bg"));
-    persistentRepository.addPerson(new Person("petyr",3,30,"ppp@abv.bg"));
+    persistentRepository.addUser(new Person("gosho", 1, 24, "ggg@abv.bg"));
+    persistentRepository.addUser(new Person("kalin", 2, 34, "kkk@abv.bg"));
+    persistentRepository.addUser(new Person("petyr", 3, 30, "ppp@abv.bg"));
 
     Date dateArrive = date.getDate(2015,1,20);
     Date dateLeaving = date.getDate(2015,1,25);
@@ -133,7 +133,7 @@ public class PersistentRepositoryTest {
 
   @Test
   public void findCitiesByDate() throws SQLException{
-    persistentRepository.addPerson(person);
+    persistentRepository.addUser(person);
     Date dateArrive = date.getDate(2015, 1,20);
     Date dateLeaving = date.getDate(2015,1,25);
     persistentRepository.addTrip(new Trip(38746387,dateArrive,dateLeaving,"Amsterdam"));
