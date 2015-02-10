@@ -1,9 +1,7 @@
 package com.clouway.task1;
 
 
-
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,31 +15,29 @@ import java.util.List;
 public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   private final ConnectionProvider provider;
-  private final String tableName;
-  private Statement statement;
   private List<User> list = new ArrayList<User>();
 
 
-  public PersistentUserDatabase(ConnectionProvider provider,String tableName) {
+  public PersistentUserDatabase(ConnectionProvider provider) {
     this.provider = provider;
-    this.tableName = tableName;
   }
 
 
   @Override
-  public void register(User user) {
-      Connection connection = provider.connect();
+  public void register(User user) throws SQLException {
+    Connection connection = provider.get();
+    Statement statement = connection.createStatement();
     try {
-      statement = connection.createStatement();
-      String sql = "insert into " + tableName + "(id,name,age,address,e_mail)  values (" + user.id + ",'" + user.name + "'," + user.age + ",'" +
+      String sql = "insert into user_info(id,name,age,address,e_mail)  values (" + user.id + ",'" + user.name + "'," + user.age + ",'" +
               user.address + "','" + user.e_mail + "')";
       statement.executeUpdate(sql);
       System.out.println("\n" + sql);
     } catch (SQLException e) {
       e.printStackTrace();
-    }finally {
+    } finally {
       try {
         connection.close();
+        statement.close();
       } catch (SQLException e) {
         e.printStackTrace();
       }
@@ -50,11 +46,10 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public void update(User user, String name) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
 
     try {
-      statement = connection.createStatement();
-      PreparedStatement pr = connection.prepareStatement("update " + tableName + " set name=? where id=?");
+      PreparedStatement pr = connection.prepareStatement("update user_info set name=? where id=?");
       pr.setString(1, name);
       pr.setInt(2, user.id);
       pr.execute();
@@ -66,10 +61,10 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public void remove(User user) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
 
     try {
-      connection.createStatement().execute("delete from " + tableName + " where id=" + user.id);
+      connection.createStatement().execute("delete from user_info where id=" + user.id);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -77,7 +72,7 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
 
   public void dropTable(String newTable) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     try {
       connection.createStatement().execute("drop table " + newTable);
     } catch (SQLException e) {
@@ -87,10 +82,10 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> findByProperty(int age, String retrieveAge) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     try {
-      statement = connection.createStatement();
-      ResultSet rs = statement.executeQuery("select * from " + tableName + " where " + age + "::text like '" + retrieveAge + "'" );
+      Statement statement = connection.createStatement();
+      ResultSet rs = statement.executeQuery("select * from user_info where " + age + "::text like '" + retrieveAge + "'");
       manipulator(rs);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -100,10 +95,10 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> retrieveUsersByAge(int age) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     try {
-      statement = connection.createStatement();
-      ResultSet rs = statement.executeQuery("select * from " + tableName + " where " + age + " >=25 ");
+      Statement statement = connection.createStatement();
+      ResultSet rs = statement.executeQuery("select * from user_info where " + age + " >=25 ");
       manipulator(rs);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -113,10 +108,10 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> getAll() {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     try {
-      statement = connection.createStatement();
-      ResultSet rs = statement.executeQuery("select * from " + tableName);
+      Statement statement = connection.createStatement();
+      ResultSet rs = statement.executeQuery("select * from user_info");
       manipulator(rs);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -124,7 +119,7 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
     return list;
   }
 
-  private void manipulator(ResultSet rs){
+  private void manipulator(ResultSet rs) {
     try {
       while (rs.next()) {
         int id = rs.getInt("id");

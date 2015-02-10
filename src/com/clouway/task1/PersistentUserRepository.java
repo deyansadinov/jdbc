@@ -1,5 +1,6 @@
 package com.clouway.task1;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
 public interface PersistentUserRepository<T> {
   List<User> getAll();
 
-  void register(T t);
+  void register(T t) throws SQLException;
 
   void update(User user, String name);
 

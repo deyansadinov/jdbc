@@ -23,8 +23,8 @@ public class PersistentUserDatabaseTest {
   @org.junit.Before
   public void setUp() throws Exception {
     ConnectionProvider connectionProvider = new ConnectionProvider();
-    userDatabase = new PersistentUserDatabase(connectionProvider,"user_info");
-    connection = connectionProvider.connect();
+    userDatabase = new PersistentUserDatabase(connectionProvider);
+    connection = connectionProvider.get();
   }
 
   @org.junit.After
@@ -34,7 +34,7 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void register() {
+  public void register() throws SQLException {
     userDatabase.register(user);
 
     List<User> lists = userDatabase.getAll();
@@ -43,7 +43,7 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void removeUser() {
+  public void removeUser() throws SQLException {
 
     userDatabase.register(user);
     userDatabase.remove(user);
@@ -53,7 +53,7 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void update() {
+  public void update()throws SQLException {
     userDatabase.register(user);
     userDatabase.update(user, "Ivan");
 
@@ -74,7 +74,7 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void like() {
+  public void like() throws SQLException{
     userDatabase.register(user);
 
     List<User> list = userDatabase.findByProperty(26, "2%");
@@ -83,7 +83,7 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void where() {
+  public void where() throws SQLException{
     userDatabase.register(user);
 
     List<User> list = userDatabase.retrieveUsersByAge(26);
