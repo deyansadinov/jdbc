@@ -1,6 +1,7 @@
 import com.clouway.task5.Article;
 import com.clouway.task5.ArticleDatabase;
 import com.clouway.task5.ConnectionProvider;
+import com.clouway.task5.NonExistingArticleException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +25,7 @@ public class ArticleDatabaseTest {
   public void setUp() {
     ConnectionProvider provider = new ConnectionProvider();
     articleDatabase = new ArticleDatabase(provider);
-    connection = provider.connect();
+    connection = provider.get();
   }
 
   @After
@@ -42,7 +43,7 @@ public class ArticleDatabaseTest {
   }
 
   @Test
-  public void updateArticle() {
+  public void updateSingleArticle() {
     articleDatabase.addArticle(new Article(1,"postgres"));
 
     articleDatabase.updateArticle(1,"mysql");
@@ -53,5 +54,44 @@ public class ArticleDatabaseTest {
 
     assertThat(listHistory.size(),is(1));
     assertThat(result.get(0).title,is("mysql"));
+  }
+
+  @Test
+  public void updateAnotherArticle() {
+    articleDatabase.addArticle(new Article(1,"postgres"));
+    articleDatabase.addArticle(new Article(2,"mysql"));
+
+    articleDatabase.updateArticle(1,"dido");
+    articleDatabase.updateArticle(2,"dido2");
+
+    List<Article> result = articleDatabase.findAll();
+
+    List<Article> listHistory = articleDatabase.findHistory();
+
+    assertThat(listHistory.size(),is(2));
+    assertThat(result.get(1).title,is("dido2"));
+    assertThat(result.get(0).title,is("dido"));
+  }
+
+  @Test(expected = NonExistingArticleException.class)
+  public void updateNonExistingArticle () {
+    articleDatabase.addArticle(new Article(1,"postgres"));
+
+    articleDatabase.updateArticle(2,"mysql");
+  }
+
+  @Test
+  public void updateSingleArticleMultipleTimes () {
+    articleDatabase.addArticle(new Article(1,"postgres"));
+
+    articleDatabase.updateArticle(1,"mysql");
+    articleDatabase.updateArticle(1,"dido");
+
+    List<Article> result = articleDatabase.findAll();
+
+    List<Article> listHistory = articleDatabase.findHistory();
+
+    assertThat(listHistory.size(),is(2));
+    assertThat(result.get(0).title,is("dido"));
   }
 }

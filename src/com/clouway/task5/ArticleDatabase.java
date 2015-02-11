@@ -1,7 +1,6 @@
 package com.clouway.task5;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,12 +21,11 @@ public class ArticleDatabase {
   }
 
 
-
   public void addArticle(Article article) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     try {
       PreparedStatement pr = connection.prepareStatement("insert into articles(id,title) values (" + article.id + ",'" +
-      article.title + "')");
+              article.title + "')");
       pr.execute();
     } catch (SQLException e) {
       e.printStackTrace();
@@ -35,14 +33,14 @@ public class ArticleDatabase {
   }
 
   public List<Article> findAll() {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     List<Article> list = new ArrayList<Article>();
     try {
       ResultSet rs = connection.createStatement().executeQuery("select * from articles");
-      while (rs.next()){
+      while (rs.next()) {
         int id = rs.getInt("id");
         String title = rs.getString("title");
-        list.add(new Article(id,title));
+        list.add(new Article(id, title));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -51,14 +49,14 @@ public class ArticleDatabase {
   }
 
   public List<Article> findHistory() {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
     List<Article> list = new ArrayList<Article>();
     try {
       ResultSet rs = connection.createStatement().executeQuery("select * from articles_history");
-      while (rs.next()){
+      while (rs.next()) {
         int id = rs.getInt("id");
         String title = rs.getString("title");
-        list.add(new Article(id,title));
+        list.add(new Article(id, title));
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -67,9 +65,14 @@ public class ArticleDatabase {
   }
 
   public void updateArticle(int id, String newArticle) {
-    Connection connection = provider.connect();
+    Connection connection = provider.get();
+    String query = "select id from articles where id=" + id;
     try {
-      connection.createStatement().execute("update articles set title='" + newArticle + "' where id=" + id);
+      ResultSet rs = connection.createStatement().executeQuery(query);
+      if (!rs.next()){
+        throw new NonExistingArticleException();
+      }
+      connection.createStatement().executeUpdate("update articles set title='" + newArticle + "' where id=" + id);
     } catch (SQLException e) {
       e.printStackTrace();
     }
