@@ -15,7 +15,6 @@ import java.util.List;
 public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   private final ConnectionProvider provider;
-  private List<User> list = new ArrayList<User>();
 
 
   public PersistentUserDatabase(ConnectionProvider provider) {
@@ -82,11 +81,12 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> findByProperty(int age, String retrieveAge) {
+    List<User> list = new ArrayList<User>();
     Connection connection = provider.get();
     try {
       Statement statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from user_info where " + age + "::text like '" + retrieveAge + "'");
-      manipulator(rs);
+      manipulator(rs,list);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -95,11 +95,12 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> retrieveUsersByAge(int age) {
+    List<User> list = new ArrayList<User>();
     Connection connection = provider.get();
     try {
       Statement statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from user_info where " + age + " >=25 ");
-      manipulator(rs);
+      manipulator(rs,list);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -108,18 +109,19 @@ public class PersistentUserDatabase implements PersistentUserRepository<User> {
 
   @Override
   public List<User> getAll() {
+    List<User> list = new ArrayList<User>();
     Connection connection = provider.get();
     try {
       Statement statement = connection.createStatement();
       ResultSet rs = statement.executeQuery("select * from user_info");
-      manipulator(rs);
+      manipulator(rs,list);
     } catch (SQLException e) {
       e.printStackTrace();
     }
     return list;
   }
 
-  private void manipulator(ResultSet rs) {
+  private void manipulator(ResultSet rs,List<User> list) {
     try {
       while (rs.next()) {
         int id = rs.getInt("id");
