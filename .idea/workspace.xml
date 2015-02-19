@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b3ffe99d-4b79-4ae1-b2d3-8889c71c2b3c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java" afterPath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersistentRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/PersistentRepositoryTest.java" afterPath="$PROJECT_DIR$/test/PersistentRepositoryTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersonRepository.java" afterPath="$PROJECT_DIR$/src/com/clauway/task2/task3/PersonRepository.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/schema/schema.sql" afterPath="$PROJECT_DIR$/schema/schema.sql" />
-    </list>
+    <list default="true" id="b3ffe99d-4b79-4ae1-b2d3-8889c71c2b3c" name="Default" comment="" />
     <ignored path="jdbc.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,8 +26,8 @@
       <file leaf-file-name="schema.sql" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/schema/schema.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="677">
-              <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.3988183" vertical-offset="0" max-vertical-offset="677">
+              <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -994,8 +989,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/schema/schema.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
-          <caret line="0" column="19" selection-start-line="0" selection-start-column="19" selection-end-line="0" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.3988183" vertical-offset="0" max-vertical-offset="677">
+          <caret line="15" column="51" selection-start-line="15" selection-start-column="51" selection-end-line="15" selection-end-column="51" />
           <folding />
         </state>
       </provider>
