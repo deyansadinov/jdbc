@@ -23,11 +23,11 @@ public class PersistentRepository implements PersonRepository, TripRepository {
 
 
   @Override
-  public void addUser(Person person) throws SQLException {
+  public void addPerson(Person person) throws SQLException {
     Connection connection = provider.get();
     Statement statement = connection.createStatement();
     try {
-      String sql = "insert into people (name,ucn,age,user_email) values ('" + person.name + "'," + person.ucn + "," +
+      String sql = "insert into person (name,ucn,age,user_email) values ('" + person.name + "'," + person.ucn + "," +
               person.age + ",'" + person.email + "')";
       statement.executeUpdate(sql);
     } catch (SQLException e) {
@@ -39,12 +39,12 @@ public class PersistentRepository implements PersonRepository, TripRepository {
 
 
   @Override
-  public List<Person> findUsers() {
+  public List<Person> findPerson() {
     List<Person> personList = new ArrayList<Person>();
     Connection connection = provider.get();
     ResultSet rs = null;
     try {
-      rs = connection.createStatement().executeQuery("select * from people");
+      rs = connection.createStatement().executeQuery("select * from person");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -61,7 +61,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
 
     PreparedStatement pr = null;
     try {
-      pr = connection.prepareStatement("update people set age=? where name=?");
+      pr = connection.prepareStatement("update person set age=? where name=?");
       pr.setInt(1, age);
       pr.setString(2, person.name);
       pr.execute();
@@ -74,12 +74,12 @@ public class PersistentRepository implements PersonRepository, TripRepository {
   }
 
   @Override
-  public List<Person> findByLetters(String letter) {
+  public List<Person> findPersonWhichNameStartsWith(String letter) {
     List<Person> personList = new ArrayList<Person>();
     Connection connection = provider.get();
     ResultSet rs = null;
     try {
-      rs = connection.createStatement().executeQuery("select * from people where name::text like '" + letter + "%'");
+      rs = connection.createStatement().executeQuery("select * from person where name::text like '" + letter + "%'");
       fetchPeople(rs, personList);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -95,7 +95,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
     Connection connection = provider.get();
     ResultSet rs = null;
     try {
-      rs = connection.createStatement().executeQuery("select * from people where ucn in (select ucn from trip where city='" + city + "' and " +
+      rs = connection.createStatement().executeQuery("select * from person where ucn in (select ucn from trip where city='" + city + "' and " +
               "date_of_arrival='" + date + "')");
       fetchPeople(rs, personList);
     } catch (SQLException e) {
@@ -131,7 +131,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
     PreparedStatement pr = null;
     ResultSet rs = null;
     try {
-      pr = connection.prepareStatement("select * from people join trip on people.ucn=trip.ucn where city='" + city + "' "+
+      pr = connection.prepareStatement("select * from person join trip on person.ucn=trip.ucn where city='" + city + "' "+
               "and (date_of_arrival, date_of_departure) overlaps ('" + startDate + "', '" + endDate + "')");
 //      pr = connection.prepareStatement("select * from people where ucn in (select ucn from trip where city='" + city + "' " +
 //              "and (date_of_arrival, date_of_departure) overlaps ('" + startDate + "', '" + endDate + "')");

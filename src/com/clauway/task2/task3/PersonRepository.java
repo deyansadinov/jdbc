@@ -9,14 +9,14 @@ import java.util.List;
  */
 public interface PersonRepository {
 
-  void addUser(Person person) throws SQLException;
+  void addPerson(Person person) throws SQLException;
 
-  List<Person> findUsers();
+  List<Person> findPerson();
 
   void updatePerson(Person person, int age);
 
 
-  List<Person> findByLetters(String letter);
+  List<Person> findPersonWhichNameStartsWith(String letter);
 
 
   List<Person> findCitiesByDate(String city, Date date);

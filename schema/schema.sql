@@ -1,4 +1,4 @@
-CREATE TABLE people
+CREATE TABLE person
 (
     name VARCHAR(30) NOT null,
     ucn serial primary key not null,
