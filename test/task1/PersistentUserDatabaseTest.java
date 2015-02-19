@@ -1,6 +1,7 @@
 package task1;
 
 import com.clouway.task1.ConnectionProvider;
+import com.clouway.task1.DataStore;
 import com.clouway.task1.PersistentUserDatabase;
 import com.clouway.task1.User;
 import org.junit.Test;
@@ -23,7 +24,8 @@ public class PersistentUserDatabaseTest {
   @org.junit.Before
   public void setUp() throws Exception {
     ConnectionProvider connectionProvider = new ConnectionProvider();
-    userDatabase = new PersistentUserDatabase(connectionProvider);
+    DataStore dataStore = new DataStore(connectionProvider);
+    userDatabase = new PersistentUserDatabase(dataStore);
     connection = connectionProvider.get();
   }
 

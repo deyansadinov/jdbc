@@ -6,14 +6,14 @@ import java.util.List;
 /**
  * @author Deyan Sadinov <sadinov88@gmail.com>
  */
-public interface PersistentUserRepository<T> {
+public interface PersistentUserRepository {
   List<User> getAll();
 
-  void register(T t) throws SQLException;
+  void register(User user) throws SQLException;
 
   void update(User user, String name);
 
-  void remove(T t);
+  void remove(User user);
 
   List<User> findByProperty(int age, String retrieveAge);
 
