@@ -23,12 +23,12 @@ public class PersistentRepositoryTest {
 
   private PersistentRepository persistentRepository;
   private Connection connection;
-  private Person person = new Person("dido",38746387,26,"sss@abv.bg");
+  private Person person = new Person("dido", 38746387, 26, "sss@abv.bg");
   private DateCalendar date;
 
 
   @Before
-  public void setUp(){
+  public void setUp() {
     date = new DateCalendar();
     ConnectionProvider provider = new ConnectionProvider();
     persistentRepository = new PersistentRepository(provider);
@@ -48,37 +48,37 @@ public class PersistentRepositoryTest {
 
     List<Person> list = persistentRepository.findUsers();
 
-    assertThat(list.size(),is(1));
-    assertThat(list.get(0).name,is("dido"));
+    assertThat(list.size(), is(1));
+    assertThat(list.get(0).name, is("dido"));
   }
 
   @Test
-  public void updatePersonAge() throws SQLException{
+  public void updatePersonAge() throws SQLException {
     persistentRepository.addUser(person);
-    persistentRepository.updatePerson(person,27);
+    persistentRepository.updatePerson(person, 27);
 
     List<Person> list = persistentRepository.findUsers();
 
-    assertThat(list.get(0).age,is(27));
+    assertThat(list.get(0).age, is(27));
   }
 
   @Test
-  public void findPersonByLetters() throws SQLException{
+  public void findPersonByLetters() throws SQLException {
     persistentRepository.addUser(person);
 
     List<Person> list = persistentRepository.findByLetters("d");
 
-    assertThat(list.size(),is(1));
+    assertThat(list.size(), is(1));
   }
 
   @Test
-  public void findMorePersonsByLetters() throws SQLException{
+  public void findMorePersonsByLetters() throws SQLException {
     persistentRepository.addUser(person);
     persistentRepository.addUser(new Person("danail", 45389437, 24, "dd@abv.bg"));
 
     List<Person> list = persistentRepository.findByLetters("d");
 
-    assertThat(list.size(),is(2));
+    assertThat(list.size(), is(2));
   }
 
 
@@ -90,68 +90,60 @@ public class PersistentRepositoryTest {
     persistentRepository.addUser(new Person("petyr", 3, 30, "ppp@abv.bg"));
 
 
-    persistentRepository.addTrip(new Trip(38746387,date.getDate(2015, 1,20),date.getDate(2015,1,25),"Amsterdam"));
-    persistentRepository.addTrip(new Trip(1,date.getDate(2015, 1,12),date.getDate(2015,1,20),"Amsterdam"));
-    persistentRepository.addTrip(new Trip(2,date.getDate(2015, 1,10),date.getDate(2015,1,20),"Amsterdam"));
-    persistentRepository.addTrip(new Trip(3,date.getDate(2015, 1,10),date.getDate(2015,1,25),"Berlin"));
+    persistentRepository.addTrip(new Trip(38746387, date.getDate(2015, 1, 13), date.getDate(2015, 1, 25), "Amsterdam"));
+    persistentRepository.addTrip(new Trip(1, date.getDate(2015, 1, 12), date.getDate(2015, 1, 20), "Amsterdam"));
+    persistentRepository.addTrip(new Trip(2, date.getDate(2015, 1, 10), date.getDate(2015, 1, 20), "Amsterdam"));
+    persistentRepository.addTrip(new Trip(3, date.getDate(2015, 1, 10), date.getDate(2015, 1, 25), "Berlin"));
 
-    List<Person> list = persistentRepository.findPeopleAtSameCityAtSameDate("Amsterdam",date.getDate(2015, 1,12));
-   assertThat(list.size(), is(2));
+    List<Person> list = persistentRepository.findPeopleAtSameCityAtSameDate("Amsterdam", date.getDate(2015, 1, 15), date.getDate(2015, 1, 30));
+    assertThat(list.size(), is(3));
+    assertThat(list.get(1).name,is("gosho"));
+
+
 
   }
-  
+
   @Test
-  public void listCitiesOrderedByNumberOfTrips() throws SQLException{
+  public void listCitiesOrderedByNumberOfTrips() throws SQLException {
 
     persistentRepository.addUser(new Person("gosho", 1, 24, "ggg@abv.bg"));
     persistentRepository.addUser(new Person("kalin", 2, 34, "kkk@abv.bg"));
     persistentRepository.addUser(new Person("petyr", 3, 30, "ppp@abv.bg"));
 
-    Date dateArrive = date.getDate(2015,1,20);
-    Date dateLeaving = date.getDate(2015,1,25);
-
-    //version 1
-    persistentRepository.addTrip(new Trip(1,date.getDate(2015, 1,20),date.getDate(2015,1,25),"Amsterdam"));
-    persistentRepository.addTrip(new Trip(2,date.getDate(2015, 1,12),date.getDate(2015,1,20),"Amsterdam"));
-    persistentRepository.addTrip(new Trip(3,date.getDate(2015, 1,10),date.getDate(2015,1,20),"Amsterdam"));
-    persistentRepository.addTrip(new Trip(3,date.getDate(2015, 1,10),date.getDate(2015,1,25),"Berlin"));
-
-    //version 2
-    persistentRepository.addTrip(new Trip(1,dateArrive,dateLeaving,"Amsterdam"));
-    persistentRepository.addTrip(new Trip(2,dateArrive,dateLeaving,"Amsterdam"));
-    persistentRepository.addTrip(new Trip(3,dateArrive,dateLeaving,"Amsterdam"));
-    persistentRepository.addTrip(new Trip(3,dateArrive,dateLeaving,"Berlin"));
-
+    persistentRepository.addTrip(new Trip(1, date.getDate(2015, 1, 20), date.getDate(2015, 1, 25), "Amsterdam"));
+    persistentRepository.addTrip(new Trip(2, date.getDate(2015, 1, 12), date.getDate(2015, 1, 20), "Amsterdam"));
+    persistentRepository.addTrip(new Trip(3, date.getDate(2015, 1, 10), date.getDate(2015, 1, 20), "Amsterdam"));
+    persistentRepository.addTrip(new Trip(3, date.getDate(2015, 1, 10), date.getDate(2015, 1, 25), "Berlin"));
 
     List<String> result = persistentRepository.listCitiesDescendingTripCount();
 
-    assertThat(result.size(),is(2));
-    assertThat(result.get(0),is("Amsterdam"));
-    assertThat(result.get(1),is("Berlin"));
+    assertThat(result.size(), is(2));
+    assertThat(result.get(0), is("Amsterdam"));
+    assertThat(result.get(1), is("Berlin"));
 
   }
 
   @Test
-  public void findCitiesByDate() throws SQLException{
+  public void findCitiesByDate() throws SQLException {
     persistentRepository.addUser(person);
-    Date dateArrive = date.getDate(2015, 1,20);
-    Date dateLeaving = date.getDate(2015,1,25);
-    persistentRepository.addTrip(new Trip(38746387,dateArrive,dateLeaving,"Amsterdam"));
+    Date dateArrive = date.getDate(2015, 1, 20);
+    Date dateLeaving = date.getDate(2015, 1, 25);
+    persistentRepository.addTrip(new Trip(38746387, dateArrive, dateLeaving, "Amsterdam"));
 
-    List<Person> result = persistentRepository.findCitiesByDate("Amsterdam",dateArrive);
+    List<Person> result = persistentRepository.findCitiesByDate("Amsterdam", dateArrive);
 
-    assertThat(result.size(),is(1));
+    assertThat(result.size(), is(1));
   }
-  
+
   @Test
   public void addTripToPersonWhoDoNotExist() throws SQLException {
-    Date dateArrive = date.getDate(2015, 1,20);
-    Date dateLeaving = date.getDate(2015,1,25);
-    persistentRepository.addTrip(new Trip(38746387,dateArrive,dateLeaving,"Amsterdam"));
+    Date dateArrive = date.getDate(2015, 1, 20);
+    Date dateLeaving = date.getDate(2015, 1, 25);
+    persistentRepository.addTrip(new Trip(38746387, dateArrive, dateLeaving, "Amsterdam"));
 
     List<Trip> result = persistentRepository.findTrips();
 
-    assertThat(result.size(),is(0));
+    assertThat(result.size(), is(0));
   }
 
 }

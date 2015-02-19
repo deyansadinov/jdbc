@@ -11,7 +11,7 @@ public interface TripRepository {
 
   void addTrip(Trip trip);
 
-  List<Person> findPeopleAtSameCityAtSameDate(String city, Date date);
+  List<Person> findPeopleAtSameCityAtSameDate(String city, Date startDate,Date endDate);
 
   List<String> listCitiesDescendingTripCount();
 

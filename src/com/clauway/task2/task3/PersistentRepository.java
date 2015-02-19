@@ -27,7 +27,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
     Connection connection = provider.get();
     Statement statement = connection.createStatement();
     try {
-      String sql = "insert into people (name,ucn,age,e_mail) values ('" + person.name + "'," + person.ucn + "," +
+      String sql = "insert into people (name,ucn,age,user_email) values ('" + person.name + "'," + person.ucn + "," +
               person.age + ",'" + person.email + "')";
       statement.executeUpdate(sql);
     } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-    peopleManipulator(rs,personList);
+    fetchPeople(rs, personList);
     closeResultSet(rs);
 
     return personList;
@@ -80,7 +80,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
     ResultSet rs = null;
     try {
       rs = connection.createStatement().executeQuery("select * from people where name::text like '" + letter + "%'");
-      peopleManipulator(rs,personList);
+      fetchPeople(rs, personList);
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
@@ -97,7 +97,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
     try {
       rs = connection.createStatement().executeQuery("select * from people where ucn in (select ucn from trip where city='" + city + "' and " +
               "date_of_arrival='" + date + "')");
-      peopleManipulator(rs,personList);
+      fetchPeople(rs, personList);
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
@@ -125,15 +125,18 @@ public class PersistentRepository implements PersonRepository, TripRepository {
   }
 
   @Override
-  public List<Person> findPeopleAtSameCityAtSameDate(String city, Date date) {
+  public List<Person> findPeopleAtSameCityAtSameDate(String city, Date startDate, Date endDate) {
     List<Person> personList = new ArrayList<Person>();
     Connection connection = provider.get();
     PreparedStatement pr = null;
     ResultSet rs = null;
     try {
-      pr = connection.prepareStatement("select * from people where ucn in (select ucn from trip where city='" + city + "' and date_of_arrival>='" + date + "')");
+      pr = connection.prepareStatement("select * from people join trip on people.ucn=trip.ucn where city='" + city + "' "+
+              "and (date_of_arrival, date_of_departure) overlaps ('" + startDate + "', '" + endDate + "')");
+//      pr = connection.prepareStatement("select * from people where ucn in (select ucn from trip where city='" + city + "' " +
+//              "and (date_of_arrival, date_of_departure) overlaps ('" + startDate + "', '" + endDate + "')");
       rs = pr.executeQuery();
-      peopleManipulator(rs,personList);
+      fetchPeople(rs, personList);
     } catch (SQLException e) {
       e.printStackTrace();
     } finally {
@@ -165,7 +168,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
   }
 
   @Override
-  public List<Trip> findTrips()  {
+  public List<Trip> findTrips() {
     Connection connection = provider.get();
     List<Trip> tripList = new ArrayList<Trip>();
     ResultSet rs = null;
@@ -188,7 +191,7 @@ public class PersistentRepository implements PersonRepository, TripRepository {
   }
 
 
-  private void peopleManipulator(ResultSet rs,List<Person> list) {
+  private void fetchPeople(ResultSet rs, List<Person> list) {
 
     try {
       while (rs.next()) {
