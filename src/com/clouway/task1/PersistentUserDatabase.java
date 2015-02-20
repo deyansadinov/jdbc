@@ -42,7 +42,7 @@ public class PersistentUserDatabase implements PersistentUserRepository {
   }
 
   @Override
-  public List<User> findByProperty(String retrieveAge) {
+  public List<User> findUserAge(String retrieveAge) {
    return dataStore.fetchRow("select * from user_info where age::text like '" + retrieveAge + "'",new RowFetcher<User>() {
      @Override
      public User fetchRow(ResultSet rs) throws SQLException {

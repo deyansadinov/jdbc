@@ -78,9 +78,10 @@ public class PersistentUserDatabaseTest {
     userDatabase.register(user);
     userDatabase.register(new User(2,"Kalin",24,"Bulgaria","kkk@abv.bg"));
 
-    List<User> list = userDatabase.findByProperty("2%");
+    List<User> list = userDatabase.findUserAge("2%");
 
     assertThat(list.size(),is(2));
+    assertThat(list.get(0).age,is(26));
   }
 
   @Test
