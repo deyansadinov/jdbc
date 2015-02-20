@@ -4,6 +4,7 @@ import com.clouway.task1.ConnectionProvider;
 import com.clouway.task1.DataStore;
 import com.clouway.task1.PersistentUserDatabase;
 import com.clouway.task1.User;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -20,23 +21,20 @@ public class PersistentUserDatabaseTest {
   private Connection connection;
   private User user = new User(1, "dido", 26, "Bulgaria", "sss@abv.bg");
 
+  @Rule
+  public DataStoreRule dataStoreRule = new DataStoreRule();
 
   @org.junit.Before
   public void setUp() throws Exception {
     ConnectionProvider connectionProvider = new ConnectionProvider();
     DataStore dataStore = new DataStore(connectionProvider);
     userDatabase = new PersistentUserDatabase(dataStore);
-    connection = connectionProvider.get();
+    connection = dataStoreRule.getConnection();
   }
 
-  @org.junit.After
-  public void tearDown() throws Exception {
-    connection.createStatement().execute("truncate user_info");
-    connection.close();
-  }
 
   @Test
-  public void register() throws SQLException {
+  public void registerUser() throws SQLException {
     userDatabase.register(user);
 
     List<User> lists = userDatabase.getAll();
@@ -76,21 +74,25 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void like() throws SQLException{
+  public void findUserAge() throws SQLException{
     userDatabase.register(user);
+    userDatabase.register(new User(2,"Kalin",24,"Bulgaria","kkk@abv.bg"));
 
-    List<User> list = userDatabase.findByProperty(26, "2%");
+    List<User> list = userDatabase.findByProperty("2%");
 
-    assertThat(list.size(),is(1));
+    assertThat(list.size(),is(2));
   }
 
   @Test
-  public void where() throws SQLException{
+  public void retrieveUsersAge() throws SQLException{
     userDatabase.register(user);
+    userDatabase.register(new User(2,"Kalin",24,"Bulgaria","kkk@abv.bg"));
 
-    List<User> list = userDatabase.retrieveUsersByAge(26);
+    List<User> list = userDatabase.retrieveUsersAge(20);
 
+    assertThat(list.size(),is(2));
     assertThat(list.get(0).age,is(26));
+    assertThat(list.get(1).age,is(24));
   }
 
 
@@ -107,7 +109,7 @@ public class PersistentUserDatabaseTest {
   private void createTable(String newTable) {
     try {
       connection.createStatement().execute("create table " + newTable + "(id integer primary key)");
-
+      connection.close();
     } catch (SQLException e) {
       e.printStackTrace();
     }

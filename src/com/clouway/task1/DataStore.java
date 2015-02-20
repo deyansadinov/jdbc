@@ -14,10 +14,6 @@ public class DataStore  {
 
   private final ConnectionProvider connectionProvider ;
 
-//  interface RowFetcher<T> {
-//    T fetchRow(ResultSet rs) throws SQLException;
-//  }
-
   public DataStore(ConnectionProvider connectionProvider) {
     this.connectionProvider = connectionProvider;
   }

@@ -15,7 +15,7 @@ public interface PersistentUserRepository {
 
   void remove(User user);
 
-  List<User> findByProperty(int age, String retrieveAge);
+  List<User> findByProperty(String retrieveAge);
 
-  List<User> retrieveUsersByAge(int age);
+  List<User> retrieveUsersAge(int age);
 }
