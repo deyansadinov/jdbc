@@ -8,8 +8,8 @@ CREATE TABLE addresses
 CREATE TABLE contacts
 (
     user_id INT NOT NULL,
-    contact_id INT NOT NULL,
-    FOREIGN KEY (contact_id) REFERENCES addresses (id),
+    address_id INT NOT NULL,
+    FOREIGN KEY (address_id) REFERENCES addresses (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 

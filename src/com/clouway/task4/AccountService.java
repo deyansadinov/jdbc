@@ -1,10 +1,7 @@
 package com.clouway.task4;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,91 +9,120 @@ import java.util.List;
  */
 public class AccountService {
 
-  private final ConnectionProvider provider;
 
-  public AccountService(ConnectionProvider provider) {
+  private final DataStore dataStore;
 
-    this.provider = provider;
+  public AccountService(DataStore dataStore) {
+    this.dataStore = dataStore;
   }
 
   public void registerUser(User user) {
-   Connection connection = provider.get();
-    try {
-      PreparedStatement pr = connection.prepareStatement("insert into users(id,name) values (" + user.id + ",'" + user.name + "')");
-      pr.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    dataStore.execute("insert into users(id,name) values (" + user.id + ",'" + user.name + "')");
   }
 
   public List<User> findUsers() {
-    Connection connection = provider.get();
-    List<User> list = new ArrayList<User>();
-    try {
-      ResultSet rs = connection.createStatement().executeQuery("select * from users");
-      while (rs.next()) {
-        int id = rs.getInt("id");
-        String name = rs.getString("name");
-        list.add(new User(id, name));
+    return dataStore.findAll("users", new RowFetcher<User>() {
+      int id = 0;
+      String name;
+      @Override
+      public User fetchRow(ResultSet rs) {
+        try {
+          id = rs.getInt(1);
+          name = rs.getString(2);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return new User(id, name);
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return list;
+    });
   }
 
   public void registerAddress(Address address) {
-    Connection connection = provider.get();
-    try {
-      PreparedStatement pr = connection.prepareStatement("insert into addresses(id,address,city) values (" + address.id + ",'" + address.address
-              + "','" + address.city + "')");
-      pr.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    dataStore.execute("insert into addresses(id,address,city) values (" + address.id + ",'" + address.address
+            + "','" + address.city + "')");
   }
 
   public List<Address> findAddress() {
-    Connection connection = provider.get();
-    List<Address> list = new ArrayList<Address>();
-    try {
-      ResultSet rs = connection.createStatement().executeQuery("select * from addresses");
-      while (rs.next()) {
-        int id = rs.getInt("id");
-        String address = rs.getString("address");
-        String city = rs.getString("city");
-        list.add(new Address(id, address, city));
+    return dataStore.findAll("addresses", new RowFetcher<Address>() {
+      int id = 0;
+      String address;
+      String city;
+      @Override
+      public Address fetchRow(ResultSet rs) {
+        try {
+          id = rs.getInt(1);
+          address = rs.getString(2);
+          city = rs.getString(3);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return new Address(id, address, city);
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return list;
+    });
+  }
+
+  public List<Address> findAddress(String street, String city) {
+    return dataStore.fetchRow("select * from addresses where address='" + street + "' and city='" + city + "'", new RowFetcher<Address>() {
+      int id = 0;
+      String address;
+      String city;
+      @Override
+      public Address fetchRow(ResultSet rs) {
+        try {
+          id = rs.getInt(1);
+          address = rs.getString(2);
+          city = rs.getString(3);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return new Address(id, address, city);
+      }
+    });
   }
 
   public void registerContact(Contact contact) {
-    Connection connection = provider.get();
-    try {
-      PreparedStatement pr = connection.prepareStatement("insert into contacts(user_id,contact_id) values (" + contact.userId + "," + contact.contactId + ")");
-      pr.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    dataStore.execute("insert into contacts(user_id,address_id) values (" + contact.user.id + "," + contact.address.id + ")");
   }
 
   public List<Contact> findContact() {
-    Connection connection = provider.get();
-    List<Contact> list = new ArrayList<Contact>();
-    try {
-      ResultSet rs = connection.createStatement().executeQuery("select users.id as user_id,addresses.id as contact_id from users inner join contacts on contacts.user_id=users.id " +
-              "inner join addresses on contacts.contact_id=addresses.id");
-      while (rs.next()) {
-        int user_id = rs.getInt("user_id");
-        int contact_id = rs.getInt("contact_id");
-        list.add(new Contact(user_id, contact_id));
+    return dataStore.fetchRow("select users.id, users.name, addresses.id, addresses.address, addresses.city " +
+            "from users, addresses, contacts where contacts.user_id=users.id and contacts.address_id=addresses.id", new RowFetcher<Contact>() {
+      int userID = 0;
+      String userName;
+      int addressID = 0;
+      String address;
+      String city;
+      @Override
+      public Contact fetchRow(ResultSet rs) {
+        try {
+          userID = rs.getInt(1);
+          userName = rs.getString(2);
+          addressID = rs.getInt(3);
+          address = rs.getString(4);
+          city = rs.getString(5);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return new Contact(new User(userID, userName), new Address(addressID, address, city));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return list;
+    });
+  }
+
+  public List<User> findUsersByAddress(String street, String city) {
+    return dataStore.fetchRow("select users.id,users.name from users,addresses,contacts where contacts.user_id=users.id and contacts.address_id=addresses.id " +
+            "and addresses.address='" + street + "' and addresses.city='" + city + "'", new RowFetcher<User>() {
+      int id = 0;
+      String name;
+      @Override
+      public User fetchRow(ResultSet rs) {
+        try {
+          id = rs.getInt(1);
+          name = rs.getString(2);
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+        return new User(id,name);
+      }
+    });
   }
 }
