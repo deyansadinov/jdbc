@@ -9,9 +9,9 @@ import java.util.List;
 public interface PersistentUserRepository {
   List<User> getAll();
 
-  void register(User user) throws SQLException;
+  void register(User user) ;
 
-  void update(User user, String name);
+  void updateUserName(User user, String name);
 
   void remove(User user);
 

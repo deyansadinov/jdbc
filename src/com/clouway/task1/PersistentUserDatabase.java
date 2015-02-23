@@ -20,16 +20,15 @@ public class PersistentUserDatabase implements PersistentUserRepository {
   }
 
   @Override
-  public void register(User user) throws SQLException {
+  public void register(User user)  {
       dataStore.execute("insert into user_info(id,name,age,address,e_mail)  values (" + user.id + ",'" + user.name + "'," + user.age + ",'" +
               user.address + "','" + user.e_mail + "')");
   }
 
   @Override
-  public void update(User user, String name) {
+  public void updateUserName(User user, String name) {
     dataStore.execute("update user_info set name='" + name + "' where name='" + user.name + "'");
   }
-
 
   @Override
   public void remove(User user) {

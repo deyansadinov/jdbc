@@ -53,9 +53,9 @@ public class PersistentUserDatabaseTest {
   }
 
   @Test
-  public void update()throws SQLException {
+  public void updateUserName()throws SQLException {
     userDatabase.register(user);
-    userDatabase.update(user, "Ivan");
+    userDatabase.updateUserName(user, "Ivan");
 
     List<User> list = userDatabase.getAll();
     assertThat(list.get(0).name, is("Ivan"));
