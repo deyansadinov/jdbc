@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface PersonRepository {
 
-  void addPerson(Person person) throws SQLException;
+  void addPerson(Person person) ;
 
   List<Person> findPerson();
 
@@ -19,5 +19,5 @@ public interface PersonRepository {
   List<Person> findPersonWhichNameStartsWith(String letter);
 
 
-  List<Person> findCitiesByDate(String city, Date date);
+  List<Person> findPersonBy(String city, Date date);
 }

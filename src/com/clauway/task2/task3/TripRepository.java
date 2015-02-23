@@ -1,7 +1,6 @@
 package com.clauway.task2.task3;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -17,4 +16,6 @@ public interface TripRepository {
 
 
   List<Trip> findTrips() ;
+
+  void updateCityFromTrip(Trip trip, String city);
 }
