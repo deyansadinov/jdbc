@@ -61,8 +61,8 @@ public class AccountService {
     });
   }
 
-  public List<Address> findAddress(String street, String city) {
-    return dataStore.fetchRow("select * from addresses where address='" + street + "' and city='" + city + "'", new RowFetcher<Address>() {
+  public List<Address> findStreetFromCity(String city) {
+    return dataStore.fetchRow("select * from addresses where city='" + city + "'", new RowFetcher<Address>() {
       int id = 0;
       String address;
       String city;

@@ -83,15 +83,16 @@ public class AccountServiceTest {
   }
 
   @Test
-  public void findAddress() {
+  public void findStreetFromCity() {
     accountService.registerAddress(new Address(1, "Ivan Shishman", "Plovdiv"));
     accountService.registerAddress(new Address(2, "Ivan Draganov", "Varna"));
+    accountService.registerAddress(new Address(3, "Ivan Draganchev", "Varna"));
 
-    List<Address> result = accountService.findAddress("Ivan Draganov", "Varna");
+    List<Address> result = accountService.findStreetFromCity("Varna");
 
-    assertThat(result.size(),is(1));
-    assertThat(result.get(0).city,is("Varna"));
+    assertThat(result.size(),is(2));
     assertThat(result.get(0).address,is("Ivan Draganov"));
+    assertThat(result.get(1).address,is("Ivan Draganchev"));
   }
 
 
