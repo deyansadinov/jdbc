@@ -1,10 +1,7 @@
 package com.clouway.task5;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,68 +10,38 @@ import java.util.List;
 public class ArticleDatabase {
 
 
-  private final ConnectionProvider provider;
+  private final DataStore dataStore;
 
-  public ArticleDatabase(ConnectionProvider provider) {
+  public ArticleDatabase(DataStore dataStore) {
 
-    this.provider = provider;
+
+    this.dataStore = dataStore;
   }
 
 
   public void addArticle(Article article) {
-    Connection connection = provider.get();
-    try {
-      PreparedStatement pr = connection.prepareStatement("insert into articles(id,title) values (" + article.id + ",'" +
-              article.title + "')");
-      pr.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    dataStore.execute("insert into articles(id,title) values (" + article.id + ",'" + article.title + "')");
   }
 
   public List<Article> findAll() {
-    Connection connection = provider.get();
-    List<Article> list = new ArrayList<Article>();
-    try {
-      ResultSet rs = connection.createStatement().executeQuery("select * from articles");
-      while (rs.next()) {
-        int id = rs.getInt("id");
-        String title = rs.getString("title");
-        list.add(new Article(id, title));
+    return dataStore.findAll("articles",new RowFetcher<Article>() {
+      @Override
+      public Article fetchRow(ResultSet rs) throws SQLException {
+        return new Article(rs.getInt(1),rs.getString(2));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return list;
+    });
   }
 
   public List<Article> findHistory() {
-    Connection connection = provider.get();
-    List<Article> list = new ArrayList<Article>();
-    try {
-      ResultSet rs = connection.createStatement().executeQuery("select * from articles_history");
-      while (rs.next()) {
-        int id = rs.getInt("id");
-        String title = rs.getString("title");
-        list.add(new Article(id, title));
+    return dataStore.findAll("articles_history",new RowFetcher<Article>() {
+      @Override
+      public Article fetchRow(ResultSet rs) throws SQLException {
+        return new Article(rs.getInt(1),rs.getString(2));
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-    return list;
+    });
   }
 
   public void updateArticle(int id, String newArticle) {
-    Connection connection = provider.get();
-    String query = "select id from articles where id=" + id;
-    try {
-      ResultSet rs = connection.createStatement().executeQuery(query);
-      if (!rs.next()){
-        throw new NonExistingArticleException();
-      }
-      connection.createStatement().executeUpdate("update articles set title='" + newArticle + "' where id=" + id);
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+    dataStore.execute("update articles set title='" + newArticle + "' where id=" + id);
   }
 }

@@ -1,6 +1,7 @@
 import com.clouway.task5.Article;
 import com.clouway.task5.ArticleDatabase;
 import com.clouway.task5.ConnectionProvider;
+import com.clouway.task5.DataStore;
 import com.clouway.task5.NonExistingArticleException;
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +25,8 @@ public class ArticleDatabaseTest {
   @Before
   public void setUp() {
     ConnectionProvider provider = new ConnectionProvider();
-    articleDatabase = new ArticleDatabase(provider);
+    DataStore dataStore = new DataStore(provider);
+    articleDatabase = new ArticleDatabase(dataStore);
     connection = provider.get();
   }
 

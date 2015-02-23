@@ -12,9 +12,9 @@ CREATE TABLE articles_history
 
 
 CREATE TRIGGER history_trigger
-after UPDATE ON articles FOR EACH ROW EXECUTE PROCEDURE update();
+after UPDATE ON articles FOR EACH ROW EXECUTE PROCEDURE updateArticleHistory();
 
-CREATE OR REPLACE FUNCTION update() RETURNS TRIGGER AS $example_table$
+CREATE OR REPLACE FUNCTION updateArticleHistory() RETURNS TRIGGER AS $example_table$
     BEGIN
         INSERT INTO articles_history(id_articles, title) VALUES (old.id, old.title);
         RETURN old;
